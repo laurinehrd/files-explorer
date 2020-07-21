@@ -36,9 +36,9 @@ foreach ($files_start as &$value){
   }
 }
 
-echo explode($delimiter, getcwd());
+echo explode('/', $path);
 
-
+//var_dump($path);
 
  ?>
 
