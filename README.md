@@ -4,7 +4,7 @@ Le but de l'exercice est de créer un  explorateur de fichiers du type de l'Expl
 ## Récupérer l'url et afficher le contenu du dossier
 Pour récupérer et afficher l'url du dossier, on utilise la fonction ```getcwd()``` avec un ```echo``` :
 ```
-echo getcwd() .'\n'
+echo getcwd()
 ```
 Pour afficher le contenu du dossier, on utilise ```scandir()``` qui génère un tableau des contenus du dossier, et on lui met en paramètre l'url de notre dossier, et on utilise ```print_r()``` pour afficher le tableau.
 ```
@@ -49,8 +49,9 @@ if (!is_dir('start')) {
 ```
 
 ## Faire en sorte que . et .. n'apparaissent pas
-Dans un ```scandir()``` on récupère le tableau des fichiers contenus dans «start».
+Dans un ```scandir()``` on récupère le tableau des fichiers contenus dans «start», on mettant en paramètre la variable ```$path``` qui contient l'url du dossier «start» :
 ```
+$path = $dir  . DIRECTORY_SEPARATOR . 'start';
 $files_start = scandir($path);
 ```
 Puis, on compare chaque valeur du tableau avec un ```foreach``` :
@@ -109,5 +110,38 @@ switch ($value2) {
   default:
     echo '<a href="#">' .DIRECTORY_SEPARATOR .$value2 .'</a> ';
     break;
+}
+```
+
+## Afficher / masquer les fichiers cachés
+On crée une checkbox où que l'on peut cocher pour afficher les dossiers cachés :
+```
+<form class="" action="index.php" method="post">
+  <input type="checkbox" name="cache" value="coche">
+  <label for="cache">Afficher les fichiers cachés</label>
+  <br>
+  <button type="submit" name="button">Envoyer</button>
+</form>
+```
+On crée une variable ```$cache``` à laquelle on affecte l'abscence de valeur : NULL. Cette abscence de valeur correspond à l'état initial non coché de la checkbox.
+```
+$cache = NULL;
+```
+On récupère ensuite, avec la fonction ```isset()```,  la valeur de la superglobale ```$_POST['cache']``` dans la variable ```$cache```. Si la checkbox n'est pas cochée, alors la variable reste NULL. Si la checkbox est cochée, la variable prend la valeur mise dans l'input : «coche».
+```
+if(isset($_POST['cache'])){
+  $cache = $_POST['cache'];
+}
+```
+Puis, dans la boucle ```foreach()``` qui permet d'afficher les fichiers, on rajoute une condition ```else if()``` où l'on vérifie deux conditions pour masquer les fichiers cachés : il faut que ```$cache``` soit NULL et que le nom du fichier commence par un point. Pour vérifier que le nom d'un fichier commence par un point, on utilise ```$value[0] == '.'``` qui permet de récupérer et tester le premier caractère du nom du fichier, grâce au «[0]»; voir exemple :
+// Accéder à un simple caractère dans une chaîne
+// peut également être réalisé en utilisant des crochets
+$string = 'abcdef';
+echo $string[0]; // a
+echo $string[3]; // d
+echo $string[strlen($string)-1]; // f
+```
+else if($cache == NULL && $value[0] == '.'){
+  echo ' ';
 }
 ```

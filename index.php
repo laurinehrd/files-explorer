@@ -32,33 +32,37 @@ echo '<br>' .getcwd() .'<br>';
 
 $breadcrumbs = explode(DIRECTORY_SEPARATOR, $path);
 
-foreach ($breadcrumbs as &$value2) {
-  switch ($value2) {
-    case 'C:':
-      echo ' ';
-      break;
-    case 'wamp64' :
-      echo ' ';
-      break;
-    case 'www' :
-      echo ' ';
-      break;
-    case 'files-explorer' :
-      echo ' ';
-      break;
-    default:
-      echo '<a href="#">' .DIRECTORY_SEPARATOR .$value2 .'</a> ';
-      break;
-  }
-}
+// foreach ($breadcrumbs as &$value2) {
+//   switch ($value2) {
+//     case 'C:':
+//       echo ' ';
+//       break;
+//     case 'wamp64' :
+//       echo ' ';
+//       break;
+//     case 'www' :
+//       echo ' ';
+//       break;
+//     case 'files-explorer' :
+//       echo ' ';
+//       break;
+//     default:
+//       echo '<a href="#">' .DIRECTORY_SEPARATOR .$value2 .'</a> ';
+//       break;
+//   }
+// }
+
+
+
+
  ?>
 
 <br><br>
 
 <form class="" action="index.php" method="post">
-  <input type="checkbox" name="cache" value="cache" checked>
+  <input type="checkbox" name="cache" value="coche">
   <label for="cache">Afficher les fichiers cachés</label>
-  <br>
+  <br><br>
   <button type="submit" name="button">Envoyer</button>
 </form>
 
@@ -68,8 +72,6 @@ foreach ($breadcrumbs as &$value2) {
 
   if(isset($_POST['cache'])){
     $cache = $_POST['cache'];
-
-    var_dump($cache);
   }
 
 
@@ -78,12 +80,12 @@ foreach ($breadcrumbs as &$value2) {
   $delimiter = '.DIRECTORY_SEPARATOR.';
 
 
-
   foreach ($files_start as &$value){
+    //var_dump($value);
     if($value=='.' || $value=='..'){
       echo ' ';
 
-    }else if($cache == NULL && $value == '.*'){
+    }else if($cache == NULL && $value[0] == '.'){
       echo ' ';
     }
     else {
