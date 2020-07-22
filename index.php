@@ -52,6 +52,16 @@ $breadcrumbs = explode(DIRECTORY_SEPARATOR, $path);
 //   }
 // }
 
+$start_keys = array_keys($breadcrumbs,'start');
+//print_r($start_keys);
+
+foreach ($breadcrumbs as $key => $value2) {
+  if($key < $start_keys[0]){
+    echo ' ';
+  }else {
+    echo '<a href="#">' .DIRECTORY_SEPARATOR .$value2 .'</a> ';
+  }
+}
 
 
 
