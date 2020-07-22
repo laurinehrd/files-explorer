@@ -23,18 +23,7 @@ if (!is_dir('start')) {
 }
 echo '<br>' .getcwd() .'<br>';
 
-$files_start = scandir($path);
 
-$delimiter = '.DIRECTORY_SEPARATOR.';
-
-foreach ($files_start as &$value){
-  if($value=='.' || $value=='..'){
-    echo ' ';
-
-  }else {
-    print_r('<br>' .$value .'<br>');
-  }
-}
 
 ?>
 <br>
@@ -62,8 +51,45 @@ foreach ($breadcrumbs as &$value2) {
       break;
   }
 }
+ ?>
+
+<br><br>
+
+<form class="" action="index.php" method="post">
+  <input type="checkbox" name="cache" value="cache" checked>
+  <label for="cache">Afficher les fichiers cachés</label>
+  <br>
+  <button type="submit" name="button">Envoyer</button>
+</form>
+
+<?php
+
+  $cache = NULL;
+
+  if(isset($_POST['cache'])){
+    $cache = $_POST['cache'];
+
+    var_dump($cache);
+  }
 
 
+  $files_start = scandir($path);
+
+  $delimiter = '.DIRECTORY_SEPARATOR.';
+
+
+
+  foreach ($files_start as &$value){
+    if($value=='.' || $value=='..'){
+      echo ' ';
+
+    }else if($cache == NULL && $value == '.*'){
+      echo ' ';
+    }
+    else {
+      print_r('<br>' .$value .'<br>');
+    }
+  }
 
 
  ?>
