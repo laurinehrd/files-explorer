@@ -87,31 +87,44 @@ On crée la variable ```$breadcrumbs``` à laquelle on assigne la fonction ```ex
 ```
 $breadcrumbs = explode(DIRECTORY_SEPARATOR, $path);
 ```
-Maintenant, nous allons créer une boucle pour afficher l'url qu'à partir de start. Pour cela, on utilise donc ```foreach()``` pour récupérer toutes les valeurs du tableau ```breadcrumbs``` :
+
+On crée une variable ```$start_keys``` à laquelle on attribut un tableau contenant la clé du dossier «start» grâce à la fonction ```array_keys()```. On place en paramètre la variable du tableau ```$breadcrumbs``` et la valeur «start» :
 ```
-foreach ($breadcrumbs as &$value2) {
+$start_keys = array_keys($breadcrumbs,'start');
+```
+Maintenant, nous allons créer une boucle pour afficher l'url qu'à partir de start. Pour cela, on utilise donc ```foreach()``` pour récupérer chaque clé des valeurs du tableau ```breadcrumbs``` :
+```
+foreach ($breadcrumbs as $key => $value2) {
   //code ici }
 ```
-On créé ensuite une condition avec l'instruction ```switch()``` pour les valeurs de ce tableau, et pour chaque liens qui apparaissent avant le «start» on ne les affiche pas, grâce à chaque «case» que l'on va déclarer. Pour ceux que l'on va afficher, on lui crée un lien avec la balise html ```<a>```, et on les sépare avec le ```DIRECTORY_SEPARATOR``` :
+On créé une condition avec ```if()``` pour permettre de ne pas afficher les dossiers se trouvant avant «start». Pour cela, on compare les clés des dossiers contenus dans ```$breadcrumbs``` avec la clé de «start». Toutes les clées se trouvant avant ne seront pas affichés.
 ```
-switch ($value2) {
-  case 'C:':
-    echo ' ';
-    break;
-  case 'wamp64' :
-    echo ' ';
-    break;
-  case 'www' :
-    echo ' ';
-    break;
-  case 'files-explorer' :
-    echo ' ';
-    break;
-  default:
-    echo '<a href="#">' .DIRECTORY_SEPARATOR .$value2 .'</a> ';
-    break;
+if($key < $start_keys[0]){
+  echo ' ';
+```
+Et sinon, on affiche le nom des fichiers à partir de «start» et au-delà dans notre fil d'Ariane :
+```
+else {
+  echo '<a href="#">' .DIRECTORY_SEPARATOR .$value2 .'</a> ';
 }
 ```
+Le code :
+```
+$breadcrumbs = explode(DIRECTORY_SEPARATOR, $path);
+
+
+$start_keys = array_keys($breadcrumbs,'start');
+//print_r($start_keys);
+
+foreach ($breadcrumbs as $key => $value2) {
+  if($key < $start_keys[0]){
+    echo ' ';
+  }else {
+    echo '<a href="#">' .DIRECTORY_SEPARATOR .$value2 .'</a> ';
+  }
+}
+```
+
 
 ## Afficher / masquer les fichiers cachés
 On crée une checkbox où que l'on peut cocher pour afficher les dossiers cachés :
