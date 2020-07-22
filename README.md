@@ -82,3 +82,32 @@ foreach ($files_start as &$value){
 ```
 
 ## Afficher le fil d'Ariane
+On crée la variable ```$breadcrumbs``` à laquelle on assigne la fonction ```explode()```. Cette fonction permet de scinder une chaine de caractères, ici ```$path``` qui reprend l'url du dossier «start», en segments pour retourner un tableau, en utilisant un délimiteur, ici ```DIRECTORY_SEPARATOR``` :
+```
+$breadcrumbs = explode(DIRECTORY_SEPARATOR, $path);
+```
+Maintenant, nous allons créer une boucle pour afficher l'url qu'à partir de start. Pour cela, on utilise donc ```foreach()``` pour récupérer toutes les valeurs du tableau ```breadcrumbs``` :
+```
+foreach ($breadcrumbs as &$value2) {
+  //code ici }
+```
+On créé ensuite une condition avec l'instruction ```switch()``` pour les valeurs de ce tableau, et pour chaque liens qui apparaissent avant le «start» on ne les affiche pas, grâce à chaque «case» que l'on va déclarer. Pour ceux que l'on va afficher, on lui crée un lien avec la balise html ```<a>```, et on les sépare avec le ```DIRECTORY_SEPARATOR``` :
+```
+switch ($value2) {
+  case 'C:':
+    echo ' ';
+    break;
+  case 'wamp64' :
+    echo ' ';
+    break;
+  case 'www' :
+    echo ' ';
+    break;
+  case 'files-explorer' :
+    echo ' ';
+    break;
+  default:
+    echo '<a href="#">' .DIRECTORY_SEPARATOR .$value2 .'</a> ';
+    break;
+}
+```

@@ -36,9 +36,35 @@ foreach ($files_start as &$value){
   }
 }
 
-echo explode('/', $path);
+?>
+<br>
 
-//var_dump($path);
+<?php
+
+$breadcrumbs = explode(DIRECTORY_SEPARATOR, $path);
+
+foreach ($breadcrumbs as &$value2) {
+  switch ($value2) {
+    case 'C:':
+      echo ' ';
+      break;
+    case 'wamp64' :
+      echo ' ';
+      break;
+    case 'www' :
+      echo ' ';
+      break;
+    case 'files-explorer' :
+      echo ' ';
+      break;
+    default:
+      echo '<a href="#">' .DIRECTORY_SEPARATOR .$value2 .'</a> ';
+      break;
+  }
+}
+
+
+
 
  ?>
 
