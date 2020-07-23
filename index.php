@@ -2,18 +2,27 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
     <title>Files Explorer</title>
   </head>
   <body>
 
+<div class="window">
+
+  <div class="breadcrumbs">
+
+
+
+
 <?php
 
-echo getcwd() .'<br>';
+//echo getcwd() .'<br>';
 //echo getcwd() . DIRECTORY_SEPARATOR .'boris'. '<br>';
 
 $dir = getcwd();
 $files = scandir($dir);
-print_r($files);
+//print_r($files);
 $path = $dir  . DIRECTORY_SEPARATOR . 'start';
 if (!is_dir('start')) {
   mkdir('start');
@@ -21,14 +30,16 @@ if (!is_dir('start')) {
 } else {
   chdir('start');
 }
-echo '<br>' .getcwd() .'<br>';
-
+//echo '<br>' .getcwd() .'<br>';
 
 
 ?>
+
 <br>
 
 <?php
+
+
 
 $breadcrumbs = explode(DIRECTORY_SEPARATOR, $path);
 
@@ -46,14 +57,13 @@ foreach ($breadcrumbs as $key => $value2) {
 
 
  ?>
-
-<br><br>
+  </div>
+<br>
 
 <form class="" action="index.php" method="post">
   <input type="checkbox" name="cache" value="coche">
-  <label for="cache">Afficher les fichiers cachés</label>
-  <br><br>
-  <button type="submit" name="button">Envoyer</button>
+  <label class="text_hide" for="cache">Afficher les fichiers cachés</label>
+  <button class="button" type="submit" name="button">Envoyer</button>
 </form>
 
 <?php
@@ -86,9 +96,11 @@ foreach ($breadcrumbs as $key => $value2) {
 
  ?>
 
+</div>
 
-
-
+<!-- <div class="logo">
+  <img src="images/logo_acs_noir.png" alt="logo acs">
+</div> -->
 
 
 
