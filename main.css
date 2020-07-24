@@ -1,8 +1,8 @@
 body {
-  background-image: url("images/bg.jpg");
+  background-image: url("images/bg1.jpg");
   background-size: cover;
   font-family: 'Nunito', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 .window {
   width: 50%;
@@ -12,24 +12,40 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ECA98E;
+  background: rgba(249, 202, 206, 0.8);
+  /* background-color: #F9CACE; */
+  /* opacity: 0.8; */
   border-radius: 8px;
   padding: 15px;
-  box-shadow: -7px 5px 2px #A16750;
+  box-shadow: -7px 5px 0px #A23B45;
 }
+.button_window{
+
+}
+.icon_window{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2vh;
+}
+.icon_window input {
+  width : 25px;
+  /* filter: invert(10%); */
+}
+
 .breadcrumbs {
   background-color: white;
   border-radius: 8px;
   padding: 8px;
   display: flex;
 }
+
 .button {
   margin-left: 20px;
   border-radius: 8px;
   border: none;
   padding: 5px;
   font-family: 'Nunito', sans-serif;
-  box-shadow: -4px 2px 0 #A16750;
+  box-shadow: -4px 2px 0 #A23B45;
   font-size: 1rem;
 }
 .text_hide {
@@ -39,3 +55,10 @@ form {
   display: flex;
   justify-content: flex-end;
 }
+a {
+  text-decoration: none;
+  color: black;
+}
+/* #masquer {
+  display: none;
+} */

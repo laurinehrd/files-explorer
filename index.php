@@ -3,16 +3,21 @@
   <head>
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="main.js"></script>
     <link rel="stylesheet" href="main.css">
     <title>Files Explorer</title>
   </head>
   <body>
 
-<div class="window">
+<div class="window" id="close">
+
+  <div class="icon_window">
+      <input type="image" class="button_window" src="images/back.png" alt="icon back window">
+      <input type="image" class="button_window" onclick="closeWindow()" src="images/close.png" alt="icon close window">
+  </div>
+
 
   <div class="breadcrumbs">
-
-
 
 
 <?php
@@ -90,7 +95,11 @@ foreach ($breadcrumbs as $key => $value2) {
       echo ' ';
     }
     else {
-      print_r('<br>' .$value .'<br>');
+      if(is_dir($value) == true){
+        echo '<br><a href="'.chdir($path .DIRECTORY_SEPARATOR .$value).'">' .$value .'</a><br>';
+      }else{
+        echo '<br><a href="'.$value.'">' .$value .'</a><br>';
+      }
     }
   }
 
@@ -98,6 +107,12 @@ foreach ($breadcrumbs as $key => $value2) {
  ?>
 
 </div>
+
+
+
+
+
+
 
 <!-- <div class="logo">
   <img src="images/logo_acs_noir.png" alt="logo acs">
