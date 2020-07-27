@@ -28,7 +28,7 @@
 $dir = getcwd();
 $files = scandir($dir);
 //print_r($files);
-$path = $dir  . DIRECTORY_SEPARATOR . 'start';
+
 if (!is_dir('start')) {
   mkdir('start');
   chdir('start');
@@ -44,21 +44,40 @@ if (!is_dir('start')) {
 
 <?php
 
+$path = $dir  . DIRECTORY_SEPARATOR . 'start';
+
+if(isset($_POST['folder'])){
+  $path = $_POST['folder'];
+}
+
+$dir_temps = $path;
+
+if(isset($_POST['ariane'])){
+  $breadcrumbs_temps = explode(DIRECTORY_SEPARATOR, $dir_temps);
+  $key_temps = array_keys($breadcrumbs_temps, $_POST['ariane']);
+  var_dump($breadcrumbs_temps);
+  // $path = $_POST['ariane'];
+}
 
 
+chdir($path);
 $breadcrumbs = explode(DIRECTORY_SEPARATOR, $path);
 
-
 $start_keys = array_keys($breadcrumbs,'start');
-//print_r($start_keys);
+// print_r($start_keys);
+// print_r($breadcrumbs);
+echo '<form action="index.php" method="post">';
 
 foreach ($breadcrumbs as $key => $value2) {
   if($key < $start_keys[0]){
     echo ' ';
   }else {
-    echo '<a href="#">' .DIRECTORY_SEPARATOR .$value2 .'</a> ';
+    print_r('<button type="submit" name="ariane" value="'.$value2 .'">'.$value2.'</button>');
   }
 }
+echo '</form>';
+
+
 
 
  ?>
@@ -81,10 +100,12 @@ foreach ($breadcrumbs as $key => $value2) {
   }
 
 
-  $files_start = scandir($path);
-
   $delimiter = '.DIRECTORY_SEPARATOR.';
 
+
+$files_start = scandir($path);
+
+echo '<form action="index.php" method="POST">';
 
   foreach ($files_start as &$value){
     //var_dump($value);
@@ -96,30 +117,47 @@ foreach ($breadcrumbs as $key => $value2) {
     }
     else {
       if(is_dir($value) == true){
-        echo '<br><a href="'.chdir($path .DIRECTORY_SEPARATOR .$value).'">' .$value .'</a><br>';
+        print_r('<button type="submit" name="folder" value="' .$path. DIRECTORY_SEPARATOR .$value .'">' .$value.'</button><br>');
       }else{
-        echo '<br><a href="'.$value.'">' .$value .'</a><br>';
+        echo '<br>' .$value .'<br>';
       }
     }
   }
-
+echo '</form>';
 
  ?>
+
+
+
+</div>
+
+
+<div class="start">
+  <input onclick="openWindow()" id="start" type="image" src="images/folder.png" alt="icon folder">
+  <p class="p_start">START</p>
 
 </div>
 
 
 
+<div class="bar_outils">
 
+  <img class="logo_acs" src="images/logo-acs.png" alt="logo access code school">
+  <div class="acs"><img class="icon_diplome" src="images/mortarboard.png" alt="icone diplome"><p class="p_acs">Access Code School</p></div>
+  <img class="logo_php_js" src="images/php.png" alt="logo php">
+  <img class="logo_php_js" src="images/javascript.png" alt="logo javascript">
 
+  <div class="julie_laurine">
+    <img class="icon_woman" src="images/people.png" alt="icon woman"><p>Julie BOULENGER</p>
+    <img class="icon_woman icon_laurine" src="images/woman.png" alt="icon woman"><p>Laurine HERARD</p>
+  </div>
 
+  <div class="today">
+    <div class="time"><?php date_default_timezone_set("Europe/Paris"); echo date("H:i")?></div>
+    <div class="date"><?php echo date("d/m/Y")?></div>
+  </div>
 
-<!-- <div class="logo">
-  <img src="images/logo_acs_noir.png" alt="logo acs">
-</div> -->
-
-
-
+</div>
 
 
 
