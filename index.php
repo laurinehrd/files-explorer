@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -12,7 +13,7 @@
 <div class="window" id="close">
 
   <div class="icon_window">
-      <input type="image" class="button_window" src="images/back.png" alt="icon back window">
+      <input type="image" class="button_window" src="images/back.png" alt="icon back window" name="back">
       <input type="image" class="button_window" onclick="closeWindow()" src="images/close.png" alt="icon close window">
   </div>
 
@@ -44,29 +45,38 @@ if (!is_dir('start')) {
 
 <?php
 
-$path = $dir  . DIRECTORY_SEPARATOR . 'start';
+if(!isset($_SESSION['before'])){
+  $path = $dir  . DIRECTORY_SEPARATOR . 'start';
+}else{
+  $path = $_SESSION['before'];
+}
 
-if(isset($_POST['folder'])){
-  $path = $_POST['folder'];
+
+if(isset($_GET['folder'])){
+  $path = $_GET['folder'];
+  $_SESSION['before'] = $path;
 }
 
 $dir_temps = $path;
 
-if(isset($_POST['ariane'])){
+if(isset($_GET['ariane'])){
   $breadcrumbs_temps = explode(DIRECTORY_SEPARATOR, $dir_temps);
-  $key_temps = array_keys($breadcrumbs_temps, $_POST['ariane']);
-  var_dump($breadcrumbs_temps);
-  // $path = $_POST['ariane'];
+  $key_temps = array_keys($breadcrumbs_temps, $_GET['ariane']);
+  $elements = array_slice($breadcrumbs_temps,0,$key_temps[0]+1);
+  $path = implode(DIRECTORY_SEPARATOR, $elements);
+  $_SESSION['before'] = $path;
 }
 
 
 chdir($path);
+
+
 $breadcrumbs = explode(DIRECTORY_SEPARATOR, $path);
 
 $start_keys = array_keys($breadcrumbs,'start');
 // print_r($start_keys);
 // print_r($breadcrumbs);
-echo '<form action="index.php" method="post">';
+echo '<form action="index.php" method="GET">';
 
 foreach ($breadcrumbs as $key => $value2) {
   if($key < $start_keys[0]){
@@ -85,7 +95,7 @@ echo '</form>';
 
 <br>
 
-<form class="" action="index.php" method="post">
+<form class="" action="index.php" method="GET">
   <input type="checkbox" name="cache" value="coche">
   <label class="text_hide" for="cache">Afficher les fichiers cachés</label>
   <button class="button" type="submit" name="button">Envoyer</button>
@@ -95,8 +105,8 @@ echo '</form>';
 
   $cache = NULL;
 
-  if(isset($_POST['cache'])){
-    $cache = $_POST['cache'];
+  if(isset($_GET['cache'])){
+    $cache = $_GET['cache'];
   }
 
 
@@ -105,7 +115,7 @@ echo '</form>';
 
 $files_start = scandir($path);
 
-echo '<form action="index.php" method="POST">';
+echo '<form action="index.php" method="GET">';
 
   foreach ($files_start as &$value){
     //var_dump($value);
@@ -117,7 +127,7 @@ echo '<form action="index.php" method="POST">';
     }
     else {
       if(is_dir($value) == true){
-        print_r('<button type="submit" name="folder" value="' .$path. DIRECTORY_SEPARATOR .$value .'">' .$value.'</button><br>');
+        print_r('<button class="img_folder" type="submit" name="folder" value="' .$path. DIRECTORY_SEPARATOR .$value .'">' .$value.'</button><br>');
       }else{
         echo '<br>' .$value .'<br>';
       }
