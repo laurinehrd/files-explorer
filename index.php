@@ -112,6 +112,8 @@ echo '</form>';
 
   $delimiter = '.DIRECTORY_SEPARATOR.';
 
+$pathfile = NULL;
+$openFile = NULL;
 
 $files_start = scandir($path);
 
@@ -130,11 +132,14 @@ echo '<form class="form_dossier" action="index.php" method="GET">';
         print_r('<button class="button_folder" type="submit" name="folder" value="' .$path. DIRECTORY_SEPARATOR .$value .'">'."<img class='img_folder' src='images/folder.png'>" .$value.'</button><br>');
       }else{
         $filetype = pathinfo($value, PATHINFO_EXTENSION);
+        $pathfile = $path. DIRECTORY_SEPARATOR .$value;
+        // echo $pathfile;
+
         if($filetype == 'jpg' || $filetype == 'png'){
-          echo '<img class="icon_image" src="images/image.png" alt="icone fichier image">
+          echo '<button type="submit" name="openImg" value="'.$pathfile.'"><img class="icon_image" src="images/image.png" alt="icone fichier image"></button>
           <br>' .$value .'<br>';
         }else if($filetype == 'txt'){
-          echo '<img class="icon_image" src="images/texte.png" alt="icone fichier texte">
+          echo '<button type="submit" name="openTxt" value="'.$pathfile.'"><img class="icon_image" src="images/texte.png" alt="icone fichier texte"></button>
           <br>' .$value .'<br>';
         }else{
           echo '<br>' .$value .'<br>';
@@ -143,6 +148,16 @@ echo '<form class="form_dossier" action="index.php" method="GET">';
     }
   }
 echo '</form>';
+
+function openFile($pathfile){
+  // $openFile = fopen($pathfile, 'r');
+  echo nl2br(file_get_contents($pathfile));
+}
+
+if(isset($_GET['openTxt'])){
+  openFile($pathfile);
+}
+
 
  ?>
 
