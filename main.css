@@ -48,6 +48,7 @@ body {
   font-family: 'Nunito', sans-serif;
   box-shadow: -4px 2px 0 #A23B45;
   font-size: 1rem;
+  cursor: pointer;
 }
 .text_hide {
   font-size: 1rem;
@@ -60,10 +61,6 @@ a {
   text-decoration: none;
   color: black;
 }
-/* #masquer {
-  display: none;
-} */
-
 
 
 .bar_outils {
@@ -141,5 +138,39 @@ a {
   margin-top: 0;
 }
 .start input{
-  width: 60px;
+  width: 4rem;
+}
+
+.form_dossier{
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+}
+.img_folder{
+  width: 4rem;
+  height: 4rem;
+
+}
+.button_folder{
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: grid;
+  margin-bottom: 4rem;
+  margin-right: 2rem;
+}
+.button_ariane{
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.button_ariane:hover{
+  background-color: #A23B45;
+  color: white;
+  border-radius: 8px;
+}
+.icon_image{
+  width: 3.5rem;
+  height: 4rem;
 }

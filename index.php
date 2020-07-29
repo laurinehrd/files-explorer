@@ -82,7 +82,7 @@ foreach ($breadcrumbs as $key => $value2) {
   if($key < $start_keys[0]){
     echo ' ';
   }else {
-    print_r('<button type="submit" name="ariane" value="'.$value2 .'">'.$value2.'</button>');
+    print_r('<button class="button_ariane" type="submit" name="ariane" value="'.$value2 .'">'.$value2.'</button>');
   }
 }
 echo '</form>';
@@ -115,7 +115,7 @@ echo '</form>';
 
 $files_start = scandir($path);
 
-echo '<form action="index.php" method="GET">';
+echo '<form class="form_dossier" action="index.php" method="GET">';
 
   foreach ($files_start as &$value){
     //var_dump($value);
@@ -127,9 +127,18 @@ echo '<form action="index.php" method="GET">';
     }
     else {
       if(is_dir($value) == true){
-        print_r('<button class="img_folder" type="submit" name="folder" value="' .$path. DIRECTORY_SEPARATOR .$value .'">' .$value.'</button><br>');
+        print_r('<button class="button_folder" type="submit" name="folder" value="' .$path. DIRECTORY_SEPARATOR .$value .'">'."<img class='img_folder' src='images/folder.png'>" .$value.'</button><br>');
       }else{
-        echo '<br>' .$value .'<br>';
+        $filetype = pathinfo($value, PATHINFO_EXTENSION);
+        if($filetype == 'jpg' || $filetype == 'png'){
+          echo '<img class="icon_image" src="images/image.png" alt="icone fichier image">
+          <br>' .$value .'<br>';
+        }else if($filetype == 'txt'){
+          echo '<img class="icon_image" src="images/texte.png" alt="icone fichier texte">
+          <br>' .$value .'<br>';
+        }else{
+          echo '<br>' .$value .'<br>';
+        }
       }
     }
   }
