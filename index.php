@@ -14,7 +14,8 @@
 
   <div class="icon_window">
       <input type="image" class="button_window" src="images/back.png" alt="icon back window" name="back">
-      <input type="image" class="button_window" onclick="closeWindow()" src="images/close.png" alt="icon close window">
+      <!-- <button type="submit" class="button_reload" name="reload"><img class="refresh" src="images/refresh.png" alt="icon refresh"></button> -->
+      <input type="image" class="button_close" onclick="closeWindow()" src="images/close.png" alt="icon close window">
   </div>
 
 
@@ -23,7 +24,7 @@
 
 <?php
 
-//echo getcwd() .'<br>';
+// echo getcwd() .'<br>';
 //echo getcwd() . DIRECTORY_SEPARATOR .'boris'. '<br>';
 
 $dir = getcwd();
@@ -95,10 +96,15 @@ echo '</form>';
 
 <br>
 
-<form class="" action="index.php" method="GET">
+<form class="barAction" action="index.php" method="GET">
+  <input type="text" name="newFolderName" placeholder="Nom du dossier">
+  <button class="button btn_creerDossier" type="submit" name="newFolder" value="newFolder">Créer le dossier</button>
+  <button class="button" type="submit" name="paste" value="paste">Coller</button>
+  <!-- <button class="button" type="submit" name="rename" value="rename">Renommer</button>
+  <button class="button" type="submit" name="delete" value="delete">Supprimer</button> -->
   <input type="checkbox" name="cache" value="coche">
   <label class="text_hide" for="cache">Afficher les fichiers cachés</label>
-  <button class="button" type="submit" name="button">Envoyer</button>
+  <button class="button btn-envoyer" type="submit" name="button">Envoyer</button>
 </form>
 
 <?php
@@ -114,6 +120,7 @@ echo '</form>';
 
 $pathfile = NULL;
 $openFile = NULL;
+$image = NULL;
 
 $files_start = scandir($path);
 
@@ -136,11 +143,18 @@ echo '<form class="form_dossier" action="index.php" method="GET">';
         // echo $pathfile;
 
         if($filetype == 'jpg' || $filetype == 'png'){
-          echo '<button type="submit" name="openImg" value="'.$pathfile.'"><img class="icon_image" src="images/image.png" alt="icone fichier image"></button>
-          <br>' .$value .'<br>';
+          echo '<button class="btn" type="submit" name="openImg" value="'.$pathfile.'">
+          <img class="icon_image" src="images/image.png" alt="icone fichier image">' .$value .'</button><br>
+          <button class="btn btn_copy" type="submit" name="copy" value="'.$pathfile.'" id="copyButton">Copier</button><br>
+          <button class="btn btn_copy" type="submit" name="rename" value="'.$value.'" id="renameButton">Renommer</button><br>
+          <button class="btn btn_copy" type="submit" name="delete" value="'.$pathfile.'" id="deleteButton">Supprimer</button>';
         }else if($filetype == 'txt'){
-          echo '<button type="submit" name="openTxt" value="'.$pathfile.'"><img class="icon_image" src="images/texte.png" alt="icone fichier texte"></button>
-          <br>' .$value .'<br>';
+          echo '<button class="btn" type="submit" name="openTxt" value="'.$pathfile.'">
+          <img class="icon_image" src="images/texte.png" alt="icone fichier texte">' .$value .'</button><br>
+          <button class="btn btn_copy" type="submit" name="copy" value="'.$pathfile.'" id="copyButton">Copier</button><br>
+          <button class="btn btn_copy" type="submit" name="rename" value="'.$pathfile.'" id="renameButton">Renommer</button><br>
+          <button class="btn btn_copy" type="submit" name="delete" value="'.$pathfile.'" id="deleteButton">Supprimer</button>';
+
         }else{
           echo '<br>' .$value .'<br>';
         }
@@ -149,14 +163,84 @@ echo '<form class="form_dossier" action="index.php" method="GET">';
   }
 echo '</form>';
 
+//ouvrir des fichiers :
 function openFile($pathfile){
-  // $openFile = fopen($pathfile, 'r');
   echo nl2br(file_get_contents($pathfile));
+}
+function openImg($pathfile){
+  var_dump($pathfile);
+  $image = $_GET['openImg'];
+  $imageIndex = explode(DIRECTORY_SEPARATOR, $image);
+  $image = array_slice($imageIndex, 4);
+  var_dump($image);
+  $image = implode(DIRECTORY_SEPARATOR, $image);
+  echo '<img src="'.$image.'">';
 }
 
 if(isset($_GET['openTxt'])){
   openFile($pathfile);
 }
+if(isset($_GET['openImg'])){
+  openImg($_GET['openImg']);
+}
+
+//copier coller fichiers :
+if(isset($_GET['copy'])){
+  $pathfile = $_GET['copy'];
+  $_SESSION['copy'] = $pathfile;
+}
+if(isset($_GET['paste'])){
+  copypaste($path);
+}
+function copypaste($path){
+  $pathfile = $_SESSION['copy'];
+  $nameCopy = explode(DIRECTORY_SEPARATOR, $pathfile);
+  $nameCopy = end($nameCopy);
+  if($pathfile == NULL){
+    echo ' ';
+  }else{
+    copy($pathfile, $path .DIRECTORY_SEPARATOR. $nameCopy);
+  }
+  $_SESSION['copy'] = NULL;
+  /*header('location : C:\wamp64\www\files-explorer\index.php');
+  Problème : Internal Server Error
+  The server encountered an internal error or misconfiguration and was unable to complete your request.
+  Après recherche : voir le fichier error log pour savoir le soucis*/
+}
+
+//création nouveau dossier :
+function newFolder($path){
+  $nameFolder = $_GET['newFolderName'];
+  if ($nameFolder == NULL){
+    echo '';
+  }else if(!is_dir($nameFolder)){
+    mkdir($nameFolder, 0777);
+  }
+}
+if(isset($_GET['newFolderName'])){
+  newFolder($path);
+}
+
+//renommer un fichier
+if(isset($_GET['rename'])){
+  $getname = $_GET['rename'];
+  echo '<form method="GET" action="index.php">
+          <input type="text" name="newName" placeholder="Nouveau nom">
+          <button class="btn-rename" type="submit">Ok</button>
+        </form>';
+  $_SESSION['rename'] = $getname;
+}
+if(isset($_GET['newName'])){
+  $oldname = $_SESSION['rename'];
+  $newname = $_GET['newName'];
+  if($oldname == NULL || $newname == NULL){
+    echo '';
+  }else{
+    rename($oldname,$newname);
+  }
+  $_SESSION['rename'] = NULL;
+}
+
 
 
  ?>
@@ -169,7 +253,11 @@ if(isset($_GET['openTxt'])){
 <div class="start">
   <input onclick="openWindow()" id="start" type="image" src="images/folder.png" alt="icon folder">
   <p class="p_start">START</p>
+</div>
 
+<div class="basket">
+  <input type="image" src="images/delete.png" alt="icon basket">
+  <p class="p_start">CORBEILLE</p>
 </div>
 
 

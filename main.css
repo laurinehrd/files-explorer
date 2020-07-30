@@ -3,7 +3,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   font-family: 'Nunito', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 .window {
   width: 50%;
@@ -19,9 +19,23 @@ body {
   border-radius: 8px;
   padding: 15px;
   box-shadow: -7px 5px 0px #A23B45;
+  overflow: scroll;
 }
-.button_window{
+::-webkit-scrollbar {
+  width: 8px;
+  height: 0px; /*scroll barre du bas*/
+  background: rgba(249, 202, 206, 0.8);
+}
+::-webkit-scrollbar-corner { /*angle du coin */
+  background: rgba(249, 202, 206, 0.8);
+}
+::-webkit-scrollbar-thumb { /*barre de défilement*/
+  background: #A23B45;
+  border-radius: 8px;
+}
 
+img{
+  /* margin-bottom: 0.5rem; */
 }
 .icon_window{
   display: flex;
@@ -30,9 +44,17 @@ body {
 }
 .icon_window input {
   width : 25px;
-  /* filter: invert(10%); */
 }
-
+/* .button_reload{
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+} */
+.refresh{
+  width: 20px;
+  filter: invert(40%);
+  display: flex;
+}
 .breadcrumbs {
   background-color: white;
   border-radius: 8px;
@@ -41,27 +63,34 @@ body {
 }
 
 .button {
-  margin-left: 20px;
   border-radius: 8px;
   border: none;
   padding: 5px;
+  margin-right: 2rem;
   font-family: 'Nunito', sans-serif;
-  box-shadow: -4px 2px 0 #A23B45;
-  font-size: 1rem;
+  box-shadow: -2px 2px 0 #A23B45;
   cursor: pointer;
 }
-.text_hide {
-  font-size: 1rem;
+.btn-envoyer{
+  margin-left: 0.5rem;
 }
-form {
+.barAction{
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+}
+input{
+  border-radius: 8px;
+  border : none;
+  padding: 6px;
+}
+.btn_creerDossier{
+  margin-left: -0.8rem;
+  /* box-shadow: none; */
 }
 a {
   text-decoration: none;
   color: black;
 }
-
 
 .bar_outils {
   background-color: #A23B45;
@@ -76,7 +105,6 @@ a {
   width: 35px;
 }
 .acs{
-  font-size: 1rem;
   display: flex;
   align-items: center;
   margin-left: 0.4rem;
@@ -136,15 +164,25 @@ a {
 .p_start{
   color: white;
   margin-top: 0;
+  font-size: 0.8rem;
+  text-align: center;
 }
 .start input{
+  width: 4rem;
+}
+.basket{
+  position: absolute;
+  bottom: 10vh;
+  right: 10vh;
+}
+.basket input{
   width: 4rem;
 }
 
 .form_dossier{
   margin-top: 1.5rem;
   display: flex;
-  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 .img_folder{
   width: 4rem;
@@ -163,7 +201,6 @@ a {
   border: none;
   background-color: transparent;
   cursor: pointer;
-  font-size: 1rem;
 }
 .button_ariane:hover{
   background-color: #A23B45;
@@ -173,4 +210,15 @@ a {
 .icon_image{
   width: 3.5rem;
   height: 4rem;
+}
+.btn{
+border: none;
+background-color: transparent;
+cursor: pointer;
+display: grid;
+margin-bottom: 4rem;
+}
+.btn_copy{
+  display: contents;
+  color: white;
 }
