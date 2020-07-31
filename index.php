@@ -24,7 +24,7 @@
 
 <?php
 
-// echo getcwd() .'<br>';
+ // echo getcwd() .'<br>';
 //echo getcwd() . DIRECTORY_SEPARATOR .'boris'. '<br>';
 
 $dir = getcwd();
@@ -100,8 +100,8 @@ echo '</form>';
   <input type="text" name="newFolderName" placeholder="Nom du dossier">
   <button class="button btn_creerDossier" type="submit" name="newFolder" value="newFolder">Créer le dossier</button>
   <button class="button" type="submit" name="paste" value="paste">Coller</button>
-  <!-- <button class="button" type="submit" name="rename" value="rename">Renommer</button>
-  <button class="button" type="submit" name="delete" value="delete">Supprimer</button> -->
+  <button class="button" type="submit" name="upload" value="upload">Télécharger</button>
+  <!-- <button class="button" type="submit" name="delete" value="delete">Supprimer</button> -->
   <input type="checkbox" name="cache" value="coche">
   <label class="text_hide" for="cache">Afficher les fichiers cachés</label>
   <button class="button btn-envoyer" type="submit" name="button">Envoyer</button>
@@ -168,7 +168,7 @@ function openFile($pathfile){
   echo nl2br(file_get_contents($pathfile));
 }
 function openImg($pathfile){
-  var_dump($pathfile);
+  // var_dump($pathfile);
   $image = $_GET['openImg'];
   $imageIndex = explode(DIRECTORY_SEPARATOR, $image);
   $image = array_slice($imageIndex, 4);
@@ -241,7 +241,45 @@ if(isset($_GET['newName'])){
   $_SESSION['rename'] = NULL;
 }
 
+// supprimer un fichier
+if(isset($_GET['delete'])){
+  $urlfichier = $_GET['delete'];
+  $nomfichier = explode(DIRECTORY_SEPARATOR,$urlfichier);
+  $nomfichier = end($nomfichier);
+  $urlB = explode(DIRECTORY_SEPARATOR, $urlfichier);
+  $keyFe = array_keys($urlB, 'files-explorer');
+  $urlB = array_slice($urlB,0,$keyFe[0]+1);
+  $urlB = implode(DIRECTORY_SEPARATOR,$urlB);
+  $urlBasket = $urlB.DIRECTORY_SEPARATOR.'basket';
+  if ($urlfichier != NULL && $nomfichier != NULL){
+    if(copy($urlfichier,$urlBasket.DIRECTORY_SEPARATOR.$nomfichier)){
+      echo 'Fichier supprimé';
+    }else{
+      echo 'Fichier encore lààààà';
+    }
+    unlink($urlfichier);
+  }else{
+    echo '';
+  }
+}
 
+// télécharger un fichier
+if(isset($_GET['upload'])){
+  echo '<form class="formUpload" enctype="multipart/form-data" method="POST" action="index.php">
+          <input type="hidden" name="MAX_FILE_SIZE" value="30000">
+          <input type="file" name="file">
+          <input type="submit" name="test" value="Envoyer le fichier">
+        </form>';
+}
+if(isset($_POST['test'])){
+  $folderUpload = getcwd().DIRECTORY_SEPARATOR;
+  $fileUploadName = basename($_FILES['file']['name']);
+  if(move_uploaded_file($_FILES['file']['tmp_name'],$folderUpload.$fileUploadName)){
+    echo 'Fichier arrivé dans téléchargement';
+  }else{
+    echo 'Echec de l\'envoi';
+  }
+}
 
  ?>
 
@@ -255,13 +293,64 @@ if(isset($_GET['newName'])){
   <p class="p_start">START</p>
 </div>
 
+<!-- <div class="upload">
+  <input onclick="openWindow()" id="start" type="image" src="images/folder-upload.png" alt="icon folder upload">
+  <p class="p_start">UPLOAD</p>
+</div> -->
+
 <div class="basket">
-  <input type="image" src="images/delete.png" alt="icon basket">
+  <input onclick="openNewWindow()" type="image" src="images/delete.png" alt="icon basket">
   <p class="p_start">CORBEILLE</p>
 </div>
 
+<!-- ************************Fenetre corbeille***************************** -->
+<div class="window windowBasket" id="newOpen">
+  <div class="icon_window">
+      <input type="image" class="button_close" onclick="closeNewWindow()" src="images/close.png" alt="icon close window">
+  </div>
+  <?php
+  $arrayBasket = explode(DIRECTORY_SEPARATOR,$path);
+  $basketkey = array_keys($arrayBasket, 'files-explorer');
+  $urlbaskettemp = array_slice($arrayBasket,0,$basketkey[0]+1);
+  $urlbaskettemp = implode(DIRECTORY_SEPARATOR, $urlbaskettemp);
+  $urlbasket = $urlbaskettemp.DIRECTORY_SEPARATOR.'basket';
+  $filesBasket = scandir($urlbasket);
+  var_dump($urlbasket);
+
+  foreach ($filesBasket as &$value3) {
+    if($value3=='.' || $value3=='..'){
+      echo ' ';
+    }else{
+    if(is_dir($value3) == true){
+      print_r('<button class="button_folder" type="submit" name="folder" value="' .$path. DIRECTORY_SEPARATOR .$value3 .'">'."<img class='img_folder' src='images/folder.png'>" .$value3.'</button><br>');
+  }else{
+    $filetypeb = pathinfo($value3, PATHINFO_EXTENSION);
+    $pathfileb = $urlbasket. DIRECTORY_SEPARATOR .$value3;
+    // echo $pathfile;
+
+    if($filetypeb == 'jpg' || $filetypeb == 'png'){
+      echo '<button class="btn" type="submit" name="openImg" value="'.$pathfileb.'">
+      <img class="icon_image" src="images/image.png" alt="icone fichier image">' .$value3 .'</button><br>
+      <button class="btn btn_copy" type="submit" name="restaurer" value="'.$pathfileb.'" id="restaureButton">Restaurer</button>';
+    }else if($filetypeb == 'txt'){
+      echo '<button class="btn" type="submit" name="openTxt" value="'.$pathfileb.'">
+      <img class="icon_image" src="images/texte.png" alt="icone fichier texte">' .$value3 .'</button><br>
+      <button class="btn btn_copy" type="submit" name="restaurer" value="'.$pathfileb.'" id="restaureButton">Restaurer</button>';
+
+    }else{
+      echo '<br>' .$value3 .'<br>';
+      }
+    }
+  }
+}
 
 
+
+   ?>
+</div>
+
+
+<!-- bar outil -->
 <div class="bar_outils">
 
   <img class="logo_acs" src="images/logo-acs.png" alt="logo access code school">

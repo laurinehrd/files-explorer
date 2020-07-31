@@ -21,6 +21,13 @@ body {
   box-shadow: -7px 5px 0px #A23B45;
   overflow: scroll;
 }
+.windowBasket{
+  display: none;
+  top: 60%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  background: rgba(249, 202, 206, 0.9);
+}
 ::-webkit-scrollbar {
   width: 8px;
   height: 0px; /*scroll barre du bas*/
@@ -66,7 +73,7 @@ img{
   border-radius: 8px;
   border: none;
   padding: 5px;
-  margin-right: 2rem;
+  margin-right: 1.3rem;
   font-family: 'Nunito', sans-serif;
   box-shadow: -2px 2px 0 #A23B45;
   cursor: pointer;
@@ -178,6 +185,14 @@ a {
 .basket input{
   width: 4rem;
 }
+/* .upload{
+  position: absolute;
+  bottom: 40vh;
+  right: 10vh;
+}
+.upload input{
+  width: 4rem;
+} */
 
 .form_dossier{
   margin-top: 1.5rem;
@@ -210,6 +225,7 @@ a {
 .icon_image{
   width: 3.5rem;
   height: 4rem;
+  margin-bottom: 0.5rem;
 }
 .btn{
 border: none;
